@@ -847,47 +847,6 @@ public void LamMoiLoai() {
             }
         });
     }           
-private void loadBangMonAnTheoLoai() {
-        int loaiIndex = cboLoai.getSelectedIndex(); // Hoặc cách bạn quản lý loại
-        if (loaiIndex == -1) {
-            return;
-        }
-
-        int maMonAn = loaiIndex + 1;
-
-        DefaultTableModel model = (DefaultTableModel) tblBangChiTietMon.getModel();
-        model.setRowCount(0);
-
-        try {
-            String sql = "SELECT * FROM ChiTietMonAn WHERE MaMonAn = ?";
-            ResultSet rs = XJdbc.executeQuery(sql, maMonAn);
-
-            while (rs.next()) {
-                String tenMon = rs.getString("TenMon");
-                double gia = rs.getDouble("Gia");
-                String tenAnh = rs.getString("HinhAnh");
-
-                ImageIcon icon = null;
-                File imgFile = new File("images/" + tenAnh);
-                if (imgFile.exists()) {
-                    Image img = new ImageIcon(imgFile.getAbsolutePath())
-                            .getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
-                    icon = new ImageIcon(img);
-                }
-
-                model.addRow(new Object[]{
-                    icon != null ? icon : "Không có ảnh",
-                    tenMon,
-                    gia
-                });
-            }
-
-            rs.getStatement().getConnection().close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "❌ Lỗi khi load bảng món ăn theo loại: " + e.getMessage());
-        }
-    }
 ChiTietMonAnDAO monAnDAO = new ChiTietMonAnDAOImpl();
 
     private void loadBangMonAn() {
