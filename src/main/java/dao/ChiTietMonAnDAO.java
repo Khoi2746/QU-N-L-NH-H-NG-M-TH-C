@@ -21,7 +21,5 @@ public interface ChiTietMonAnDAO {
     // Tìm một món ăn chi tiết theo mã
     ChiTietMonAn findById(Integer id);
 
-    // Lấy tất cả dữ liệu chi tiết món ăn kèm thông tin món ăn
-    List<ChiTietMonAn> findAllWithMonAn();
-     public ChiTietMonAn createWithMonAn(String tenLoaiMon, ChiTietMonAn chiTiet);
+    
 }

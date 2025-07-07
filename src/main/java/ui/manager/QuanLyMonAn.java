@@ -55,7 +55,6 @@ public class QuanLyMonAn extends javax.swing.JDialog {
         setTitle("Quản Lý Món An");
         setResizable(false);
         setLocationRelativeTo(null);
-        
         fillToTable();
         fillChiTietMonAnTheoMonAn(ABORT);
         tblBangLoaiMon.setFont(new Font("Arial", Font.BOLD, 20));
@@ -144,16 +143,9 @@ public class QuanLyMonAn extends javax.swing.JDialog {
                 "Hình Ảnh", "Tên Món Ăn", "Đơn Giá VND"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Double.class
-            };
             boolean[] canEdit = new boolean [] {
                 false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -410,47 +402,7 @@ public class QuanLyMonAn extends javax.swing.JDialog {
 
     private void btnXoaMonAnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaMonAnActionPerformed
         // TODO add your handling code here:
-<<<<<<< Updated upstream
-   btnXoaMonAn.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        int selectedRow = tblBangChiTietMon.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(null, "Vui lòng chọn món ăn để xóa.");
-            return;
-        }
-
-        int confirm = JOptionPane.showConfirmDialog(
-                null,
-                "Bạn có chắc muốn xóa món ăn này?",
-                "Xác nhận xóa",
-                JOptionPane.YES_NO_OPTION
-        );
-        if (confirm != JOptionPane.YES_OPTION) {
-            return;
-        }
-
-        try {
-            // Lấy mã món ăn từ cột 0 trong bảng
-            int maMonAn = Integer.parseInt(tblBangChiTietMon.getValueAt(selectedRow, 0).toString());
-
-            // Gọi DAO để xóa
-            MonAnDAO monAnDAO = new MonAnDAOImpl();
-            monAnDAO.deleteById(maMonAn);
-
-            JOptionPane.showMessageDialog(null, "✅ Xóa món ăn thành công!");
-            loadBangMonAn(); // Reload lại bảng
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "❌ Lỗi khi xóa món ăn: " + ex.getMessage());
-        }
-    }
-});
-
-
-=======
         XoaMonAn();
->>>>>>> Stashed changes
     }//GEN-LAST:event_btnXoaMonAnActionPerformed
 
     private void btnChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeActionPerformed
@@ -876,224 +828,7 @@ private void loadComboBoxLoai() {
         JOptionPane.showMessageDialog(null, "Lỗi khi load combobox loại món ăn: " + e.getMessage());
     }
 }
-<<<<<<< Updated upstream
-   
-
-
-
-
-    private void txtTenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTenActionPerformed
-
-    private void txtPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPriceActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPriceActionPerformed
-
-    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        // TODO add your handling code here:
-        btnClear.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Xóa nội dung các ô nhập
-                txtTen.setText("");
-                txtPrice.setText("");
-
-                // Reset combobox về mục đầu tiên
-                cboLoai.setSelectedIndex(0);
-
-                // Xóa hình ảnh hiển thị
-                lblHinh.setIcon(null);
-
-                // Xóa tên ảnh và đường dẫn ảnh tạm đang lưu
-                tenAnh = null;
-                duongDanAnh = null;
-
-                // Thông báo nếu cần
-                JOptionPane.showMessageDialog(null, "Đã làm mới toàn bộ thông tin.", "Làm mới", JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
-
-    }//GEN-LAST:event_btnClearActionPerformed
-
-    private void btnThemMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemMoiActionPerformed
-        // TODO add your handling code here:
-   btnThemMoi.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        try {
-            // Lấy dữ liệu từ form
-            String tenMon = txtTen.getText().trim();
-            String giaStr = txtPrice.getText().trim();
-            String tenLoaiMon = cboLoai.getSelectedItem().toString(); // Tên loại món (ví dụ: "Món Gà")
-
-            // Validate input
-            if (tenMon.isEmpty() || giaStr.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Không được để trống tên món hoặc giá.");
-                return;
-            }
-
-            if (tenAnh == null || duongDanAnh == null) {
-                JOptionPane.showMessageDialog(null, "Vui lòng chọn ảnh món ăn.");
-                return;
-            }
-
-            double gia;
-            try {
-                gia = Double.parseDouble(giaStr);
-                if (gia <= 0) {
-                    JOptionPane.showMessageDialog(null, "Giá phải > 0.");
-                    return;
-                }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "Giá không hợp lệ.");
-                return;
-            }
-
-            File folder = new File("images");
-            if (!folder.exists()) folder.mkdirs();
-
-            File source = new File(duongDanAnh);
-            File dest = new File("images/" + tenAnh);
-            Files.copy(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            // Chuẩn bị đối tượng ChiTietMonAn
-            ChiTietMonAn chiTiet = new ChiTietMonAn();
-            chiTiet.setTenMon(tenMon);
-            chiTiet.setGia(gia);
-            chiTiet.setHinhAnh(tenAnh);
-            // Gọi DAO để tạo Món Ăn + Chi Tiết Món Ăn (bao gồm mã tự tăng)
-            ChiTietMonAnDAO dao = new ChiTietMonAnDAOImpl();
-            dao.createWithMonAn(tenLoaiMon, chiTiet);
-            JOptionPane.showMessageDialog(null, "✔️ Thêm món ăn thành công!");
-            // Reset form
-            txtTen.setText("");
-            txtPrice.setText("");
-            lblHinh.setIcon(null);
-            tenAnh = null;
-            duongDanAnh = null;
-
-            // Reload bảng
-            fillChiTietMonAnTheoMonAn(ABORT);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Lỗi: " + ex.getMessage());
-        }
-    }
-});
-
-
-    }//GEN-LAST:event_btnThemMoiActionPerformed
-
-    private void txtTenLoaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenLoaiActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTenLoaiActionPerformed
-
-    private void btnMoDuongDanLoaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoDuongDanLoaiActionPerformed
-        ActionListener[] listeners = btnMoDuongDanLoai.getActionListeners();
-        for (ActionListener listener : listeners) {
-            btnMoDuongDanLoai.removeActionListener(listener);
-        }
-        btnMoDuongDanLoai.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setDialogTitle("Chọn hình ảnh");
-
-                // Chỉ cho phép chọn các file ảnh
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("Hình ảnh", "jpg", "jpeg", "png", "gif");
-                fileChooser.setFileFilter(filter);
-
-                int result = fileChooser.showOpenDialog(null);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    tenAnhLoai = selectedFile.getName();
-                    duongDanAnhLoai = selectedFile.getAbsolutePath();
-
-                    try {
-                        ImageIcon icon = new ImageIcon(duongDanAnhLoai);
-                        // Nếu label có width và height bằng 0 thì scale sẽ lỗi, nên cần check
-                        int width = lblHinhLoai.getWidth() > 0 ? lblHinhLoai.getWidth() : 100;
-                        int height = lblHinhLoai.getHeight() > 0 ? lblHinhLoai.getHeight() : 100;
-
-                        Image img = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-                        lblHinhLoai.setIcon(new ImageIcon(img));
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        JOptionPane.showMessageDialog(null, "Không thể hiển thị hình ảnh: " + ex.getMessage(), "Lỗi hiển thị", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            }
-        });
-    }//GEN-LAST:event_btnMoDuongDanLoaiActionPerformed
-
-    private void btnThemMoiLoaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemMoiLoaiActionPerformed
-        // TODO add your handling code here:
-        btnThemMoiLoai.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    String tenLoai = txtTenLoai.getText().trim();
-
-                    if (tenLoai.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Vui lòng nhập tên loại món.", "Thiếu thông tin", JOptionPane.WARNING_MESSAGE);
-                        return;
-                    }
-
-                    if (tenAnhLoai == null || duongDanAnhLoai == null) {
-                        JOptionPane.showMessageDialog(null, "Vui lòng chọn hình ảnh cho loại món ăn.", "Thiếu hình ảnh", JOptionPane.WARNING_MESSAGE);
-                        return;
-                    }
-
-                    // Tạo thư mục ảnh nếu chưa có
-                    File folder = new File("images");
-                    if (!folder.exists()) {
-                        folder.mkdirs();
-                    }
-
-                    // Sao chép ảnh vào thư mục
-                    File source = new File(duongDanAnhLoai);
-                    File dest = new File("images/" + tenAnhLoai);
-                    Files.copy(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-                    // Thêm vào CSDL bảng MonAn
-                    String sql = "INSERT INTO MonAn (TenMonAn, HinhAnh) VALUES (?, ?)";
-                    int row = XJdbc.update(sql, tenLoai, tenAnhLoai);
-
-                    if (row > 0) {
-                        JOptionPane.showMessageDialog(null, "✔️ Thêm loại món ăn thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
-
-                        // Reset form
-                        txtTenLoai.setText("");
-                        lblHinhLoai.setIcon(null);
-                        tenAnhLoai = null;
-                        duongDanAnhLoai = null;
-
-                        // Tải lại bảng loại món ăn
-                        loadBangMonAnTheoLoai();
-
-                        // Cập nhật lại combobox bên phần Món Ăn - Đồ Uống
-                        loadComboBoxLoai();
-
-                    } else {
-                        JOptionPane.showMessageDialog(null, "❌ Thêm loại món ăn thất bại!", "Thất bại", JOptionPane.ERROR_MESSAGE);
-                    }
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "⚠️ Đã xảy ra lỗi: " + ex.getMessage(), "Lỗi hệ thống", JOptionPane.ERROR_MESSAGE);
-                }
-                fillToTable();
-            }
-        });
-
-    }//GEN-LAST:event_btnThemMoiLoaiActionPerformed
-
-    private void btnClearLoaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearLoaiActionPerformed
-        // TODO add your handling code here:
-=======
 public void LamMoiLoai() {
->>>>>>> Stashed changes
         btnClearLoai.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1111,77 +846,8 @@ public void LamMoiLoai() {
                 JOptionPane.showMessageDialog(null, "Đã làm mới toàn bộ thông tin.", "Làm mới", JOptionPane.INFORMATION_MESSAGE);
             }
         });
-<<<<<<< Updated upstream
-    }//GEN-LAST:event_btnClearLoaiActionPerformed
-
-    private void btnXoaLoaiMonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaLoaiMonActionPerformed
-        btnXoaLoaiMon.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = tblBangLoaiMon.getSelectedRow();
-                if (selectedRow == -1) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng chọn loại món ăn để xóa.");
-                    return;
-                }
-
-                int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn xóa loại món ăn này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-                if (confirm != JOptionPane.YES_OPTION) {
-                    return;
-                }
-
-                try {
-                    // Lấy tên món ăn từ bảng (cột 1 vì cột 0 là ảnh)
-                    String tenMonAn = tblBangLoaiMon.getValueAt(selectedRow, 1).toString();
-
-                    // Xóa ChiTietMonAn trước để tránh lỗi ràng buộc
-                    String sql1 = "DELETE FROM ChiTietMonAn WHERE MaMonAn IN (SELECT MaMonAn FROM MonAn WHERE TenMonAn = ?)";
-                    XJdbc.update(sql1, tenMonAn);
-
-                    // Sau đó xóa MonAn
-                    String sql2 = "DELETE FROM MonAn WHERE TenMonAn = ?";
-                    int rowsAffected = XJdbc.update(sql2, tenMonAn);
-
-                    if (rowsAffected > 0) {
-                        JOptionPane.showMessageDialog(null, "✅ Xóa thành công!");
-                        loadBangMonAnTheoLoai();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "❌ Không tìm thấy hoặc không thể xóa loại món ăn này.");
-                    }
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "❌ Lỗi khi xóa loại món ăn: " + ex.getMessage());
-                }
-                fillToTable();
-                fillChiTietMonAnTheoMonAn(ABORT);
-            }
-        });
-
-    }//GEN-LAST:event_btnXoaLoaiMonActionPerformed
-private void fillComboBoxLoaiMon() {
-    cboLoai.removeAllItems(); // Xóa dữ liệu cũ
-
-    MonAnDAOImpl dao = new MonAnDAOImpl();
-    List<MonAn> list = dao.findAll();
-
-    for (MonAn mon : list) {
-        cboLoai.addItem(mon.getTenMonAn());
-    }
-}
-
-    private void tblBangChiTietMonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBangChiTietMonMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tblBangChiTietMonMouseClicked
-
-    private void cboLoaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboLoaiActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboLoaiActionPerformed
-
-    private void loadBangMonAnTheoLoai() {
-=======
     }           
 private void loadBangMonAnTheoLoai() {
->>>>>>> Stashed changes
         int loaiIndex = cboLoai.getSelectedIndex(); // Hoặc cách bạn quản lý loại
         if (loaiIndex == -1) {
             return;
@@ -1258,12 +924,8 @@ ChiTietMonAnDAO monAnDAO = new ChiTietMonAnDAOImpl();
         DefaultTableModel model = (DefaultTableModel) tblBangChiTietMon.getModel();
         model.setRowCount(0); // Xóa dữ liệu cũ
 
-<<<<<<< Updated upstream
-
-=======
         ChiTietMonAnDAO dao = new ChiTietMonAnDAOImpl();
         List<ChiTietMonAn> list = dao.findByMonAnId(maMonAn);
->>>>>>> Stashed changes
 
         for (ChiTietMonAn ct : list) {
             ImageIcon icon = null;
