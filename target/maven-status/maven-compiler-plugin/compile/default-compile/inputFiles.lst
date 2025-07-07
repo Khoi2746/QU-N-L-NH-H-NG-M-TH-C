@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 E:\DUAN\DUAN1\QuanLyNhaHangAmThucVietNamPRO\src\main\java\dao\ChamCongDAO.java
 E:\DUAN\DUAN1\QuanLyNhaHangAmThucVietNamPRO\src\main\java\dao\ChiTietMonAnDAO.java
 E:\DUAN\DUAN1\QuanLyNhaHangAmThucVietNamPRO\src\main\java\dao\ChiTieuDao.java
@@ -54,3 +55,62 @@ E:\DUAN\DUAN1\QuanLyNhaHangAmThucVietNamPRO\src\main\java\util\XStr.java
 E:\DUAN\DUAN1\QuanLyNhaHangAmThucVietNamPRO\src\main\java\uui\Auth.java
 E:\DUAN\DUAN1\QuanLyNhaHangAmThucVietNamPRO\src\main\java\uui\Login.java
 E:\DUAN\DUAN1\QuanLyNhaHangAmThucVietNamPRO\src\main\java\uui\MainApp.java
+=======
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\ui\manager\DatMon.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\util\XStr.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\uui\Login.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\uui\MainApp.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\entity\LichSuGiaoDich.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\ui\manager\QuanLyNhaHang.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\ChamCongDAO.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\MonAnDAO.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\entity\ChiTieu.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\util\XQuery.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\util\XIcon.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\ui\manager\QuanLyTaiKhoan.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\util\XDate.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\entity\NhanVien.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\LichSuGiaoDichDAO.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\entity\DoanhThu.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\DoanhThuDAO.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\entity\HoaDon.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\pro\RoundedPanel.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\entity\ChiTietMonAn.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\util\ExcelExporter.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\impl\UserDAOImpl.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\util\XDialog.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\util\XAuth.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\impl\ChamCongDAOImpl.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\ui\manager\QuanLyMonAn.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\impl\NhanVienDAOImpl.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\HoaDonDAO.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\ui\manager\QuanLyNhanVien.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\UserDAO.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\impl\LichSuGiaoDichDAOImpl.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\NhanVienDAO.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\ChiTieuDao.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\CrudDAO.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\impl\HoaDonDAOImpl.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\ChiTietMonAnDAO.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\impl\ChiTieuDaoImpl.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\ui\manager\QuanLyChamCongNhanVien.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\util\XJdbc.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\uui\Auth.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\ui\manager\QuanLyChiTieu.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\ui\manager\xLichSuGiaoDich.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\entity\HoaDonChiTiet.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\util\JdbcHelper.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\HoaDonChiTietDAO.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\impl\DoanhThuDAOImpl.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\entity\MonAn.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\entity\User.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\impl\MonAnDAOImpl.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\entity\ChamCong.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\ui\manager\BanAn.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\util\TimeRange.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\util\TableIcon.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\impl\ChiTietMonAnDAOImpl.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\dao\impl\HoaDonChiTietDAOImpl.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\ui\manager\ThongKeDoanhThu.java
+C:\Users\Trang Phan\Desktop\DUAN1\QU-N-L-NH-H-NG-M-TH-C\src\main\java\Itf\QuanLyNhaHangController.java
+>>>>>>> Stashed changes

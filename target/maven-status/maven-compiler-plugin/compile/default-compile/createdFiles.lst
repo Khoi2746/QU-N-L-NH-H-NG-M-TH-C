@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 ui\manager\QuanLyNhaHang$8.class
 ui\manager\DatMon$14.class
 entity\MonAn$MonAnBuilder.class
@@ -152,3 +153,10 @@ ui\manager\DatMon.class
 ui\manager\xLichSuGiaoDich$3.class
 dao\DoanhThuDAO.class
 ui\manager\QuanLyTaiKhoan$2.class
+=======
+entity\ChiTietMonAn.class
+util\XJdbc.class
+util\JdbcHelper.class
+entity\DoanhThu.class
+util\XQuery.class
+>>>>>>> Stashed changes

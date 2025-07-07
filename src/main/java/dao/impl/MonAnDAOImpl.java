@@ -43,16 +43,19 @@ public class MonAnDAOImpl implements MonAnDAO {
     }
 
     @Override
-    public void deleteById(Integer id) {
-        String sql = "DELETE FROM MonAn WHERE MaMonAn = ?";
-        try (Connection conn = XJdbc.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+public boolean deleteById(Integer id) {
+    String sql = "DELETE FROM MonAn WHERE MaMonAn = ?";
+    try (Connection conn = XJdbc.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        int affectedRows = ps.executeUpdate();
+        return affectedRows > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
     }
+}
+
 
     @Override
     public List<MonAn> findAll() {
@@ -95,9 +98,27 @@ public class MonAnDAOImpl implements MonAnDAO {
         return monAn;
     }
 
-    public MonAn findByName(String tenMon) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+   @Override
+public MonAn findByName(String tenMon) {
+    MonAn monAn = null;
+    String sql = "SELECT * FROM MonAn WHERE TenMonAn = ?";
+    try (Connection conn = XJdbc.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, tenMon);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                monAn = new MonAn();
+                monAn.setMaMonAn(rs.getInt("MaMonAn"));
+                monAn.setTenMonAn(rs.getString("TenMonAn"));
+                monAn.setHinhAnh(rs.getString("HinhAnh"));
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return monAn;
+}
+
   
 
 }

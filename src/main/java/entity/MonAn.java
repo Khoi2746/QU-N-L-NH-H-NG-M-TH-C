@@ -14,4 +14,9 @@ public class MonAn {
     private int maMonAn;
     private String tenMonAn;
     private String hinhAnh; // chỉ lưu tên file
+    @Override
+public String toString() {
+    return tenMonAn;
+}
+
 }

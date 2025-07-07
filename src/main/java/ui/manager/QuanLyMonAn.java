@@ -1,4 +1,4 @@
-                                                                                                    /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
@@ -66,149 +66,18 @@ public class QuanLyMonAn extends javax.swing.JDialog {
         tblBangChiTietMon.setShowHorizontalLines(false); // Ẩn đường ngang
         fillComboBoxLoaiMon();
 
-
     }
+
     //-------Thêm Hình Anh Sắc Nét-----------------
     public ImageIcon resizeImageIcon(URL imageUrl, int width, int height) {
-    ImageIcon icon = new ImageIcon(imageUrl);
-    Image image = icon.getImage();
-    Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-    return new ImageIcon(scaledImage);
-}
+        ImageIcon icon = new ImageIcon(imageUrl);
+        Image image = icon.getImage();
+        Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaledImage);
+    }
 
 
-public void fillToTable() {
-    DefaultTableModel model = (DefaultTableModel) tblBangLoaiMon.getModel();
-    model.setRowCount(0);  // Xóa các dòng hiện tại trong bảng
-
-    MonAnDAOImpl dao = new MonAnDAOImpl();
-    List<MonAn> monAnList = dao.findAll();
     
-     //-------Thêm Hình Anh Sắc Nét-----------------
-for (MonAn monAn : monAnList) {
-    ImageIcon icon = null;
-
-    try {
-        if (monAn.getHinhAnh() != null && !monAn.getHinhAnh().isEmpty()) {
-            URL imgURL = getClass().getResource("/images/" + monAn.getHinhAnh());
-            if (imgURL != null) {
-                icon = resizeImageIcon(imgURL, 100, 100); // dùng hàm đã viết
-            } else {
-                System.out.println("Không tìm thấy ảnh: " + monAn.getHinhAnh());
-            }
-        }
-    } catch (Exception e) {
-        System.out.println("Lỗi load ảnh: " + e.getMessage());
-    }
-
-    model.addRow(new Object[]{icon, monAn.getTenMonAn()});
-}
-   
-
-    // Căn giữa ảnh (cột 0)
-    tblBangLoaiMon.getColumnModel().getColumn(0).setPreferredWidth(110);
-    tblBangLoaiMon.setRowHeight(110);
-    tblBangLoaiMon.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                boolean hasFocus, int row, int column) {
-            setHorizontalAlignment(SwingConstants.CENTER);
-            setVerticalAlignment(SwingConstants.CENTER);
-            setFont(new Font("Arial", Font.PLAIN, 20));
-
-            if (value instanceof ImageIcon) {
-                setIcon((ImageIcon) value);
-                setText("");
-            } else {
-                setIcon(null);
-                setText("Không có ảnh");
-            }
-
-            return this;
-        }
-    });
-
-    // Căn giữa tên món ăn (cột số 1)
-    DefaultTableCellRenderer centerTextRenderer = new DefaultTableCellRenderer();
-    centerTextRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-    centerTextRenderer.setVerticalAlignment(SwingConstants.CENTER);
-    centerTextRenderer.setFont(new Font("Arial", Font.PLAIN, 20));
-    tblBangLoaiMon.getColumnModel().getColumn(1).setCellRenderer(centerTextRenderer);
-
-    // Bắt sự kiện click dòng → load chi tiết món ăn
-    tblBangLoaiMon.addMouseListener(new MouseAdapter() {
-        @Override
-     public void mouseClicked(MouseEvent e) {
-    int row = tblBangLoaiMon.getSelectedRow();
-    if (row >= 0 && row < monAnList.size()) {
-        int maMonAn = monAnList.get(row).getMaMonAn();
-        fillChiTietMonAnTheoMonAn(maMonAn);
-    } else {
-        System.out.println("Row out of bounds: " + row + ", monAnList size: " + monAnList.size());
-    }
-}
-
-    });
-}
- 
-private void fillChiTietMonAnTheoMonAn(int maMonAn) {
-    DefaultTableModel model = (DefaultTableModel) tblBangChiTietMon.getModel();
-    model.setRowCount(0); // Xóa dữ liệu cũ
-
-    ChiTietMonAnDAO dao = new ChiTietMonAnDAOImpl();
-    List<ChiTietMonAn> list = dao.findByMonAnId(maMonAn);
-
-    for (ChiTietMonAn ct : list) {
-        ImageIcon icon = null;
-
-        try {
-            if (ct.getHinhAnh() != null && !ct.getHinhAnh().isEmpty()) {
-                // Đọc ảnh từ resources/images/
-                URL imgURL = getClass().getResource("/images/" + ct.getHinhAnh());
-                if (imgURL != null) {
-                    icon = new ImageIcon(new ImageIcon(imgURL)
-                            .getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Lỗi load ảnh: " + e.getMessage());
-        }
-
-        Object[] row = {
-            icon,
-            ct.getTenMon(),
-            ct.getGia(),
-            ct.getTenLoaiMon()
-        };
-        model.addRow(row);
-    }
-
-    tblBangChiTietMon.setRowHeight(100);
-    tblBangChiTietMon.getColumnModel().getColumn(0).setPreferredWidth(100);
-
-    // Renderer hiển thị ảnh
-    tblBangChiTietMon.getColumnModel().getColumn(0).setCellRenderer(new TableCellRenderer() {
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                boolean hasFocus, int row, int column) {
-            JLabel lbl = new JLabel();
-            lbl.setHorizontalAlignment(SwingConstants.CENTER);
-            lbl.setVerticalAlignment(SwingConstants.CENTER);
-            if (value instanceof ImageIcon) {
-                lbl.setIcon((ImageIcon) value);
-            }
-            return lbl;
-        }
-    });
-
-    // Renderer căn giữa các cột còn lại
-    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-    centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-    for (int i = 1; i < tblBangChiTietMon.getColumnCount(); i++) {
-        tblBangChiTietMon.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-    }
-}
-
 
     private String tenAnh = null;
     private String duongDanAnh = null;
@@ -241,7 +110,6 @@ private void fillChiTietMonAnTheoMonAn(int maMonAn) {
         txtPrice = new javax.swing.JTextField();
         btnThemMoi = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
-        cboLoai = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -252,6 +120,7 @@ private void fillChiTietMonAnTheoMonAn(int maMonAn) {
         btnMoDuongDanLoai = new javax.swing.JButton();
         btnThemMoiLoai = new javax.swing.JButton();
         btnClearLoai = new javax.swing.JButton();
+        cboLoai = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         jLabel4.setText("jLabel2");
@@ -453,13 +322,6 @@ private void fillChiTietMonAnTheoMonAn(int maMonAn) {
         });
         jPanel3.add(btnClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 200, 105, 39));
 
-        cboLoai.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboLoaiActionPerformed(evt);
-            }
-        });
-        jPanel3.add(cboLoai, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 100, 270, 30));
-
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setText("Hình Ảnh");
         jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 10, -1, 26));
@@ -516,6 +378,13 @@ private void fillChiTietMonAnTheoMonAn(int maMonAn) {
         });
         jPanel3.add(btnClearLoai, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 90, 85, 39));
 
+        cboLoai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboLoaiActionPerformed(evt);
+            }
+        });
+        jPanel3.add(cboLoai, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 100, 270, 30));
+
         jTabbedPane1.addTab("Thêm - Sửa Món Ăn", jPanel3);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -541,6 +410,7 @@ private void fillChiTietMonAnTheoMonAn(int maMonAn) {
 
     private void btnXoaMonAnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaMonAnActionPerformed
         // TODO add your handling code here:
+<<<<<<< Updated upstream
    btnXoaMonAn.addActionListener(new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -578,62 +448,289 @@ private void fillChiTietMonAnTheoMonAn(int maMonAn) {
 });
 
 
+=======
+        XoaMonAn();
+>>>>>>> Stashed changes
     }//GEN-LAST:event_btnXoaMonAnActionPerformed
 
     private void btnChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeActionPerformed
         // TODO add your handling code here:
-       btnChange.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        int selectedRow = tblBangChiTietMon.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(null, "Vui lòng chọn món ăn để sửa giá.");
+        SuaGia();
+    }//GEN-LAST:event_btnChangeActionPerformed
+
+    private void btnMoDuongDanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoDuongDanActionPerformed
+        MoDuongDanMonAn();
+    }//GEN-LAST:event_btnMoDuongDanActionPerformed
+    
+    private void txtTenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTenActionPerformed
+
+    private void txtPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPriceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPriceActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        // TODO add your handling code here:
+      LamMoiMonAn();
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnThemMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemMoiActionPerformed
+        // TODO add your handling code here:
+      ThemMoiMonAn();
+    }//GEN-LAST:event_btnThemMoiActionPerformed
+
+    private void txtTenLoaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenLoaiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTenLoaiActionPerformed
+
+    private void btnMoDuongDanLoaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoDuongDanLoaiActionPerformed
+        MoDuongDanLoai();
+    }//GEN-LAST:event_btnMoDuongDanLoaiActionPerformed
+
+    private void btnThemMoiLoaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemMoiLoaiActionPerformed
+        // TODO add your handling code here:
+       ThemMoiLoai();
+    }//GEN-LAST:event_btnThemMoiLoaiActionPerformed
+
+    private void btnClearLoaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearLoaiActionPerformed
+        // TODO add your handling code here:
+        LamMoiLoai();
+    }//GEN-LAST:event_btnClearLoaiActionPerformed
+
+    private void btnXoaLoaiMonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaLoaiMonActionPerformed
+        xoaLoaiMonAn();
+    }//GEN-LAST:event_btnXoaLoaiMonActionPerformed
+   
+    private void tblBangChiTietMonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBangChiTietMonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblBangChiTietMonMouseClicked
+
+    private void cboLoaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboLoaiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboLoaiActionPerformed
+
+    public static void main(String args[]) {
+
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                QuanLyMonAn dialog = new QuanLyMonAn(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnChange;
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnClearLoai;
+    private javax.swing.JButton btnMoDuongDan;
+    private javax.swing.JButton btnMoDuongDanLoai;
+    private javax.swing.JButton btnThemMoi;
+    private javax.swing.JButton btnThemMoiLoai;
+    private javax.swing.JButton btnXoaLoaiMon;
+    private javax.swing.JButton btnXoaMonAn;
+    private javax.swing.JComboBox<MonAn> cboLoai;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JLabel lblHinh;
+    private javax.swing.JLabel lblHinhLoai;
+    private javax.swing.JTable tblBangChiTietMon;
+    private javax.swing.JTable tblBangLoaiMon;
+    private javax.swing.JTextField txtPrice;
+    private javax.swing.JTextField txtTen;
+    private javax.swing.JTextField txtTenLoai;
+    // End of variables declaration//GEN-END:variables
+public void xoaLoaiMonAn() {
+    int selectedRow = tblBangLoaiMon.getSelectedRow();
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Vui lòng chọn loại món ăn cần xóa!");
+        return;
+    }
+
+    String tenLoai = tblBangLoaiMon.getValueAt(selectedRow, 1).toString();
+    int confirm = JOptionPane.showConfirmDialog(this, 
+            "Bạn có chắc muốn xóa loại món ăn '" + tenLoai + "'?",
+            "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
+    
+    if (confirm == JOptionPane.YES_OPTION) {
+        try {
+            MonAnDAO dao = new MonAnDAOImpl();
+            MonAn loaiMonAn = dao.findByName(tenLoai);
+            
+            if (loaiMonAn != null) {
+                // Xóa các chi tiết món ăn trước
+                ChiTietMonAnDAO chiTietDAO = new ChiTietMonAnDAOImpl();
+                chiTietDAO.deleteById(loaiMonAn.getMaMonAn());
+                
+                // Sau đó xóa loại món
+                dao.deleteById(loaiMonAn.getMaMonAn());
+                
+                JOptionPane.showMessageDialog(this, "✅ Xóa thành công!");
+                fillToTable();
+                fillComboBoxLoaiMon();
+            } else {
+                JOptionPane.showMessageDialog(this, "❌ Không tìm thấy loại món ăn để xóa!");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "❌ Lỗi khi xóa: " + ex.getMessage());
+        }
+    }
+    }            
+public void ThemMoiLoai() {
+        try {
+        String tenLoai = txtTenLoai.getText().trim();
+        if (tenLoai.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập tên loại món ăn!", "Thiếu thông tin", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // Lấy tên món từ bảng (cột 1 là tên món)
-        String tenMon = tblBangChiTietMon.getValueAt(selectedRow, 1).toString();
+        if (tenAnhLoai == null || duongDanAnhLoai == null) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn hình ảnh cho loại món ăn!", "Thiếu hình ảnh", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-        // Tìm chi tiết món theo tên (qua DAO)
+        // Tạo thư mục ảnh nếu chưa có
+        File folder = new File("images");
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        // Sao chép ảnh vào thư mục
+        File source = new File(duongDanAnhLoai);
+        File dest = new File("images/" + tenAnhLoai);
+        Files.copy(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        // Tạo món ăn mới (loại món)
+        MonAn monAn = new MonAn();
+        monAn.setTenMonAn(tenLoai);
+        monAn.setHinhAnh(tenAnhLoai);
+
+        // Thêm vào CSDL thông qua DAO
+        MonAnDAO dao = new MonAnDAOImpl();
+        dao.create(monAn);
+
+        JOptionPane.showMessageDialog(this, "✔️ Thêm loại món ăn thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+        
+        // Reset form
+        txtTenLoai.setText("");
+        lblHinhLoai.setIcon(null);
+        tenAnhLoai = null;
+        duongDanAnhLoai = null;
+
+        // Cập nhật lại bảng và combobox
+        fillToTable();
+        fillComboBoxLoaiMon();
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(this, "⚠️ Đã xảy ra lỗi: " + ex.getMessage(), "Lỗi hệ thống", JOptionPane.ERROR_MESSAGE);
+    }
+
+    }                                  
+public void SuaGia() {
+       int selectedRow = tblBangChiTietMon.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn món ăn để sửa giá.");
+            return;
+        }
+
+        String tenMon = tblBangChiTietMon.getValueAt(selectedRow, 1).toString();
         ChiTietMonAnDAO dao = new ChiTietMonAnDAOImpl();
         ChiTietMonAn mon = dao.findByTenMon(tenMon);
 
         if (mon == null) {
-            JOptionPane.showMessageDialog(null, "Không tìm thấy món ăn trong CSDL.");
+            JOptionPane.showMessageDialog(this, "Không tìm thấy món ăn trong CSDL.");
             return;
         }
 
-        // Nhập giá mới
         String giaStr = JOptionPane.showInputDialog(null, "Nhập giá mới cho món: " + tenMon, "Sửa giá", JOptionPane.QUESTION_MESSAGE);
-        if (giaStr == null || giaStr.trim().isEmpty()) return;
+        if (giaStr == null || giaStr.trim().isEmpty()) {
+            return;
+        }
 
         try {
             double giaMoi = Double.parseDouble(giaStr.trim());
             if (giaMoi <= 0) {
-                JOptionPane.showMessageDialog(null, "Giá phải lớn hơn 0.");
+                JOptionPane.showMessageDialog(this, "Giá phải lớn hơn 0.");
                 return;
             }
 
-            // Cập nhật giá mới
             mon.setGia(giaMoi);
-            dao.update(mon);  // ✅ dùng DAO update
+            dao.update(mon);  // Cập nhật giá mới
 
-            JOptionPane.showMessageDialog(null, "✅ Đã cập nhật giá món ăn!");
-            loadBangMonAnTheoLoai(); // Cập nhật lại bảng
-
+            JOptionPane.showMessageDialog(this, "✅ Đã cập nhật giá món ăn!");
+            loadBangMonAn(); // Cập nhật lại bảng
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Giá phải là số hợp lệ.");
+            JOptionPane.showMessageDialog(this, "Giá phải là số hợp lệ.");
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "❌ Lỗi khi cập nhật: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "❌ Lỗi khi cập nhật: " + ex.getMessage());
+        }
+
+
+    }                                 
+ public void LamMoiMonAn() {
+        btnClear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Xóa nội dung các ô nhập
+                txtTen.setText("");
+                txtPrice.setText("");
+
+                // Reset combobox về mục đầu tiên
+                cboLoai.setSelectedIndex(0);
+
+                // Xóa hình ảnh hiển thị
+                lblHinh.setIcon(null);
+
+                // Xóa tên ảnh và đường dẫn ảnh tạm đang lưu
+                tenAnh = null;
+                duongDanAnh = null;
+
+                // Thông báo nếu cần
+                JOptionPane.showMessageDialog(null, "Đã làm mới toàn bộ thông tin.", "Làm mới", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+    }           
+private void fillComboBoxLoaiMon() {
+        try {
+            cboLoai.removeAllItems(); // Xóa dữ liệu cũ
+
+            MonAnDAOImpl dao = new MonAnDAOImpl();
+            List<MonAn> list = dao.findAll();
+
+            for (MonAn mon : list) {
+                cboLoai.addItem(mon); // Chỉ thêm tên món ăn
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi load dữ liệu combo box loại món ăn!");
         }
     }
-});
-
-
-    }//GEN-LAST:event_btnChangeActionPerformed
-
-    private void btnMoDuongDanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoDuongDanActionPerformed
+public void MoDuongDanMonAn() {
         ActionListener[] listeners = btnMoDuongDan.getActionListeners();
         for (ActionListener listener : listeners) {
             btnMoDuongDan.removeActionListener(listener);
@@ -662,38 +759,124 @@ private void fillChiTietMonAnTheoMonAn(int maMonAn) {
             }
         });
 
-    }//GEN-LAST:event_btnMoDuongDanActionPerformed
-   ChiTietMonAnDAO monAnDAO = new ChiTietMonAnDAOImpl();
+    }     
+public void ThemMoiMonAn() {
+        try {
+            String tenMon = txtTen.getText().trim();
+            String giaStr = txtPrice.getText().trim();
 
-    private void loadBangMonAn() {
-    DefaultTableModel model = (DefaultTableModel) tblBangChiTietMon.getModel();
-    model.setRowCount(0);
+            MonAn loaiMonAn = (MonAn) cboLoai.getSelectedItem();
+            if (loaiMonAn == null) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn loại món ăn.", "Thiếu thông tin", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            int maLoai = loaiMonAn.getMaMonAn();
 
-    try {
-        List<ChiTietMonAn> list = monAnDAO.findAll(); // ✅ gọi DAO thay vì tự viết SQL
-
-        for (ChiTietMonAn mon : list) {
-            ImageIcon icon = null;
-            File imgFile = new File("images/" + mon.getHinhAnh());
-            if (imgFile.exists()) {
-                Image img = new ImageIcon(imgFile.getAbsolutePath())
-                        .getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
-                icon = new ImageIcon(img);
+            if (tenMon.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập tên món.", "Thiếu thông tin", JOptionPane.WARNING_MESSAGE);
+                return;
             }
 
-            Object[] row = {
-                icon != null ? icon : "Không có ảnh",
-                mon.getTenMon(),
-                mon.getGia()
-            };
+            if (giaStr.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập giá món.", "Thiếu thông tin", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-            model.addRow(row);
+            if (tenAnh == null || duongDanAnh == null) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn hình ảnh cho món ăn.", "Thiếu hình ảnh", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            double gia = Double.parseDouble(giaStr);
+            if (gia <= 0) {
+                JOptionPane.showMessageDialog(this, "Giá món ăn phải lớn hơn 0.", "Giá không hợp lệ", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            File folder = new File("images");
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+
+            File source = new File(duongDanAnh);
+            File dest = new File("images/" + tenAnh);
+            Files.copy(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+            ChiTietMonAnDAO dao = new ChiTietMonAnDAOImpl();
+            ChiTietMonAn monAn = new ChiTietMonAn();
+            monAn.setTenMon(tenMon);
+            monAn.setGia(gia);
+            monAn.setMaMonAn(maLoai);
+            monAn.setHinhAnh(tenAnh);
+
+            dao.create(monAn); // Thêm món ăn vào CSDL
+
+            JOptionPane.showMessageDialog(this, "✔️ Thêm món ăn thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+            txtTen.setText("");
+            txtPrice.setText("");
+            lblHinh.setIcon(null);
+            tenAnh = null;
+            duongDanAnh = null;
+
+            loadBangMonAn(); // Cập nhật lại bảng
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "⚠️ Đã xảy ra lỗi: " + ex.getMessage(), "Lỗi hệ thống", JOptionPane.ERROR_MESSAGE);
         }
+    }                                          
+public void XoaMonAn() {
+        int selectedRow = tblBangChiTietMon.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn món ăn cần xóa.");
+            return;
+        }
+
+        String tenMonAn = tblBangChiTietMon.getValueAt(selectedRow, 1).toString();
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Bạn có chắc muốn xóa món ăn '" + tenMonAn + "' không?",
+                "Xác nhận", JOptionPane.YES_NO_OPTION);
+
+        if (confirm != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        try {
+            ChiTietMonAnDAO monAnDAO = new ChiTietMonAnDAOImpl();
+            ChiTietMonAn monAn = monAnDAO.findByTenMon(tenMonAn);
+            if (monAn != null) {
+                monAnDAO.deleteById(monAn.getMaChiTiet());
+                JOptionPane.showMessageDialog(this, "✅ Xóa thành công!");
+                loadBangMonAn();
+            } else {
+                JOptionPane.showMessageDialog(this, "❌ Không tìm thấy món ăn để xóa.");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "❌ Lỗi khi xóa: " + ex.getMessage());
+        }
+    }                                           
+private void loadComboBoxLoai() {
+    try {
+        cboLoai.removeAllItems();
+
+        String sql = "SELECT * FROM MonAn";
+        ResultSet rs = XJdbc.executeQuery(sql);
+        while (rs.next()) {
+            MonAn mon = MonAn.builder()
+                .maMonAn(rs.getInt("MaMonAn"))
+                .tenMonAn(rs.getString("TenMonAn"))
+                .hinhAnh(rs.getString("HinhAnh"))
+                .build();
+
+            cboLoai.addItem(mon);
+        }
+        rs.getStatement().getConnection().close();
     } catch (Exception e) {
         e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "❌ Lỗi khi tải dữ liệu món ăn: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "Lỗi khi load combobox loại món ăn: " + e.getMessage());
     }
 }
+<<<<<<< Updated upstream
    
 
 
@@ -908,6 +1091,9 @@ private void fillChiTietMonAnTheoMonAn(int maMonAn) {
 
     private void btnClearLoaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearLoaiActionPerformed
         // TODO add your handling code here:
+=======
+public void LamMoiLoai() {
+>>>>>>> Stashed changes
         btnClearLoai.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -925,6 +1111,7 @@ private void fillChiTietMonAnTheoMonAn(int maMonAn) {
                 JOptionPane.showMessageDialog(null, "Đã làm mới toàn bộ thông tin.", "Làm mới", JOptionPane.INFORMATION_MESSAGE);
             }
         });
+<<<<<<< Updated upstream
     }//GEN-LAST:event_btnClearLoaiActionPerformed
 
     private void btnXoaLoaiMonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaLoaiMonActionPerformed
@@ -991,6 +1178,10 @@ private void fillComboBoxLoaiMon() {
     }//GEN-LAST:event_cboLoaiActionPerformed
 
     private void loadBangMonAnTheoLoai() {
+=======
+    }           
+private void loadBangMonAnTheoLoai() {
+>>>>>>> Stashed changes
         int loaiIndex = cboLoai.getSelectedIndex(); // Hoặc cách bạn quản lý loại
         if (loaiIndex == -1) {
             return;
@@ -1031,59 +1222,210 @@ private void fillComboBoxLoaiMon() {
             JOptionPane.showMessageDialog(null, "❌ Lỗi khi load bảng món ăn theo loại: " + e.getMessage());
         }
     }
+ChiTietMonAnDAO monAnDAO = new ChiTietMonAnDAOImpl();
 
-    private void loadComboBoxLoai() {
+    private void loadBangMonAn() {
+        DefaultTableModel model = (DefaultTableModel) tblBangChiTietMon.getModel();
+        model.setRowCount(0);
+
         try {
-            cboLoai.removeAllItems(); // Xóa các mục cũ
+            List<ChiTietMonAn> list = monAnDAO.findAll(); // ✅ gọi DAO thay vì tự viết SQL
 
-            String sql = "SELECT TenMonAn FROM MonAn";
-            ResultSet rs = XJdbc.executeQuery(sql);
-            while (rs.next()) {
-                cboLoai.addItem(rs.getString("TenMonAn")); // hoặc MaMonAn nếu cần
+            for (ChiTietMonAn mon : list) {
+                ImageIcon icon = null;
+                File imgFile = new File("images/" + mon.getHinhAnh());
+                if (imgFile.exists()) {
+                    Image img = new ImageIcon(imgFile.getAbsolutePath())
+                            .getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+                    icon = new ImageIcon(img);
+                }
+
+                Object[] row = {
+                    icon != null ? icon : "Không có ảnh",
+                    mon.getTenMon(),
+                    mon.getGia()
+                };
+
+                model.addRow(row);
             }
-            rs.getStatement().getConnection().close();
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Lỗi khi load combobox loại món ăn: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "❌ Lỗi khi tải dữ liệu món ăn: " + e.getMessage());
         }
     }
+    
+    private void fillChiTietMonAnTheoMonAn(int maMonAn) {
+        DefaultTableModel model = (DefaultTableModel) tblBangChiTietMon.getModel();
+        model.setRowCount(0); // Xóa dữ liệu cũ
 
+<<<<<<< Updated upstream
 
+=======
+        ChiTietMonAnDAO dao = new ChiTietMonAnDAOImpl();
+        List<ChiTietMonAn> list = dao.findByMonAnId(maMonAn);
+>>>>>>> Stashed changes
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnChange;
-    private javax.swing.JButton btnClear;
-    private javax.swing.JButton btnClearLoai;
-    private javax.swing.JButton btnMoDuongDan;
-    private javax.swing.JButton btnMoDuongDanLoai;
-    private javax.swing.JButton btnThemMoi;
-    private javax.swing.JButton btnThemMoiLoai;
-    private javax.swing.JButton btnXoaLoaiMon;
-    private javax.swing.JButton btnXoaMonAn;
-    private javax.swing.JComboBox<String> cboLoai;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JLabel lblHinh;
-    private javax.swing.JLabel lblHinhLoai;
-    private javax.swing.JTable tblBangChiTietMon;
-    private javax.swing.JTable tblBangLoaiMon;
-    private javax.swing.JTextField txtPrice;
-    private javax.swing.JTextField txtTen;
-    private javax.swing.JTextField txtTenLoai;
-    // End of variables declaration//GEN-END:variables
+        for (ChiTietMonAn ct : list) {
+            ImageIcon icon = null;
+
+            try {
+                if (ct.getHinhAnh() != null && !ct.getHinhAnh().isEmpty()) {
+                    // Đọc ảnh từ resources/images/
+                    URL imgURL = getClass().getResource("/images/" + ct.getHinhAnh());
+                    if (imgURL != null) {
+                        icon = new ImageIcon(new ImageIcon(imgURL)
+                                .getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Lỗi load ảnh: " + e.getMessage());
+            }
+
+            Object[] row = {
+                icon,
+                ct.getTenMon(),
+                ct.getGia(),
+                ct.getTenLoaiMon()
+            };
+            model.addRow(row);
+        }
+
+        tblBangChiTietMon.setRowHeight(100);
+        tblBangChiTietMon.getColumnModel().getColumn(0).setPreferredWidth(100);
+
+        // Renderer hiển thị ảnh
+        tblBangChiTietMon.getColumnModel().getColumn(0).setCellRenderer(new TableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
+                JLabel lbl = new JLabel();
+                lbl.setHorizontalAlignment(SwingConstants.CENTER);
+                lbl.setVerticalAlignment(SwingConstants.CENTER);
+                if (value instanceof ImageIcon) {
+                    lbl.setIcon((ImageIcon) value);
+                }
+                return lbl;
+            }
+        });
+
+        // Renderer căn giữa các cột còn lại
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        for (int i = 1; i < tblBangChiTietMon.getColumnCount(); i++) {
+            tblBangChiTietMon.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+    
+    public void fillToTable() {
+        DefaultTableModel model = (DefaultTableModel) tblBangLoaiMon.getModel();
+        model.setRowCount(0);  // Xóa các dòng hiện tại trong bảng
+
+        MonAnDAOImpl dao = new MonAnDAOImpl();
+        List<MonAn> monAnList = dao.findAll();
+
+        //-------Thêm Hình Anh Sắc Nét-----------------
+        for (MonAn monAn : monAnList) {
+            ImageIcon icon = null;
+
+            try {
+                if (monAn.getHinhAnh() != null && !monAn.getHinhAnh().isEmpty()) {
+                    URL imgURL = getClass().getResource("/images/" + monAn.getHinhAnh());
+                    if (imgURL != null) {
+                        icon = resizeImageIcon(imgURL, 100, 100); // dùng hàm đã viết
+                    } else {
+                        System.out.println("Không tìm thấy ảnh: " + monAn.getHinhAnh());
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Lỗi load ảnh: " + e.getMessage());
+            }
+
+            model.addRow(new Object[]{icon, monAn.getTenMonAn()});
+        }
+
+        // Căn giữa ảnh (cột 0)
+        tblBangLoaiMon.getColumnModel().getColumn(0).setPreferredWidth(110);
+        tblBangLoaiMon.setRowHeight(110);
+        tblBangLoaiMon.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
+                setHorizontalAlignment(SwingConstants.CENTER);
+                setVerticalAlignment(SwingConstants.CENTER);
+                setFont(new Font("Arial", Font.PLAIN, 20));
+
+                if (value instanceof ImageIcon) {
+                    setIcon((ImageIcon) value);
+                    setText("");
+                } else {
+                    setIcon(null);
+                    setText("Không có ảnh");
+                }
+
+                return this;
+            }
+        });
+
+        // Căn giữa tên món ăn (cột số 1)
+        DefaultTableCellRenderer centerTextRenderer = new DefaultTableCellRenderer();
+        centerTextRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        centerTextRenderer.setVerticalAlignment(SwingConstants.CENTER);
+        centerTextRenderer.setFont(new Font("Arial", Font.PLAIN, 20));
+        tblBangLoaiMon.getColumnModel().getColumn(1).setCellRenderer(centerTextRenderer);
+
+        // Bắt sự kiện click dòng → load chi tiết món ăn
+        tblBangLoaiMon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int row = tblBangLoaiMon.getSelectedRow();
+                if (row >= 0 && row < monAnList.size()) {
+                    int maMonAn = monAnList.get(row).getMaMonAn();
+                    fillChiTietMonAnTheoMonAn(maMonAn);
+                } else {
+                    System.out.println("Row out of bounds: " + row + ", monAnList size: " + monAnList.size());
+                }
+            }
+
+        });
+    }
+    public void MoDuongDanLoai() {
+    btnMoDuongDanLoai.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Chọn hình ảnh cho loại món ăn");
+            
+            // Chỉ cho phép chọn các file ảnh
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "Hình ảnh", "jpg", "jpeg", "png", "gif");
+            fileChooser.setFileFilter(filter);
+            
+            int result = fileChooser.showOpenDialog(null);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                tenAnhLoai = selectedFile.getName();
+                duongDanAnhLoai = selectedFile.getAbsolutePath();
+                
+                try {
+                    // Hiển thị ảnh preview
+                    ImageIcon icon = new ImageIcon(duongDanAnhLoai);
+                    
+                    // Kiểm tra kích thước label để resize ảnh phù hợp
+                    int width = lblHinhLoai.getWidth() > 0 ? lblHinhLoai.getWidth() : 120;
+                    int height = lblHinhLoai.getHeight() > 0 ? lblHinhLoai.getHeight() : 120;
+                    
+                    Image img = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                    lblHinhLoai.setIcon(new ImageIcon(img));
+                    
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, 
+                        "Không thể hiển thị hình ảnh: " + ex.getMessage(), 
+                        "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    });
+
+    }                                                 
 }
